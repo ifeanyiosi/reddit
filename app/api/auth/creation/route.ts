@@ -2,8 +2,10 @@ import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 import { generateUsername } from "unique-username-generator";
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function GET() {
+  noStore();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
@@ -16,17 +18,17 @@ export async function GET() {
     },
   });
 
-  if(!dbUser){
+  if (!dbUser) {
     dbUser = await prisma.user.create({
-      data:{
+      data: {
         id: user.id,
         email: user.email ?? "",
         firstName: user.given_name ?? "",
         lastName: user.family_name ?? "",
         imageUrl: user.picture,
-        username: generateUsername("-", 3, 15)
-      }
-    })
+        username: generateUsername("-", 3, 15),
+      },
+    });
   }
 
   return NextResponse.redirect("http://localhost:3000/");

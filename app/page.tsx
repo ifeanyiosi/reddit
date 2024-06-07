@@ -12,6 +12,7 @@ import PostCard from "@/components/post-card";
 import Pagination from "@/components/pagination";
 import { CreatePostCard } from "@/components/create-post-card";
 
+
 async function getData(searchParam: string) {
   noStore();
   const [count, data] = await prisma.$transaction([
