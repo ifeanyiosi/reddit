@@ -12,7 +12,6 @@ import PostCard from "@/components/post-card";
 import Pagination from "@/components/pagination";
 import { CreatePostCard } from "@/components/create-post-card";
 
-
 async function getData(searchParam: string) {
   noStore();
   const [count, data] = await prisma.$transaction([
@@ -54,11 +53,14 @@ async function getData(searchParam: string) {
   return { data, count };
 }
 
-export default function Home({ searchParams }: { searchParams: { page: string } }) {
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { page: string };
+}) {
   return (
     <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-4 mb-10 px-5">
       <div className="lg:w-[65%] flex flex-col gap-y-5">
-        <CreatePostCard />
         <Suspense fallback={<SuspenseCard />} key={searchParams.page}>
           <ShowItems searchParams={searchParams} />
         </Suspense>
